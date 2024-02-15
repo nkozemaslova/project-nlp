@@ -1,0 +1,30 @@
+params:
+  iterations: 100
+  learning_rate: 0.009
+  eval_metric: "MultiClass"
+  use_best_model: True
+  task_type: "CPU"
+  verbose: 100
+
+tts:
+  shuffle: True
+  stratify: y_train_val
+  train_size: 0.999
+
+dataset:
+  columns:
+    [
+      "bank",
+      "feeds",
+      "lemmas",
+      "year",
+      "month",
+      "day",
+      "time_day",
+      "sym_len",
+      "word_len",
+    ]
+
+features:
+  cat: ["bank", "time_day", "year", "month", "day"]
+  text: ["feeds", "lemmas"]
