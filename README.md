@@ -7,8 +7,9 @@
 3. Установить poetry и pre-commit: `pip install poetry`, `pip install pre-commit`.
 4. `poetry install`
 5. `pre-commit install`
-6. Запустить файл train.py: `python train.py`
-7. Запустить файл infer.py: `python infer.py`
+6. `dvc pull`
+7. Запустить файл train.py: `python train.py`
+8. Запустить файл infer.py: `python infer.py`
 
 Результат работы проекта - обученная модель model.bin и файл с предсказаниями predictions.csv. 
 
