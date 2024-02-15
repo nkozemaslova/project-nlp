@@ -1,3 +1,9 @@
-data/
 .venv/
 .DS_store
+catboost_info/
+model.bin
+predictions.csv
+__pycache__/
+outputs/
+data/test_df.csv
+data/train_df.csv
