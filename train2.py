@@ -1,8 +1,10 @@
 import hydra
+import mlflow
 import pandas as pd
 from catboost import CatBoostClassifier, Pool
 from omegaconf import DictConfig, OmegaConf
 from preprocessing import first_preprocess, preprocess_data
+from sklearn.metrics import accuracy_score, log_loss, roc_auc_score
 from sklearn.model_selection import train_test_split as tts
 
 
@@ -57,8 +59,29 @@ def main(cfg: DictConfig) -> None:
     )
 
     print("Train dataset shape: {}\n".format(train_pool.shape))
-
     model = fit_model(train_pool, validation_pool)
+
+    mlflow.set_tracking_uri(uri="http://128.0.1.1:8080")
+
+    with mlflow.start_run():
+        params = {
+            "iterations": cfg.params.iterations,
+            "learning_rate": cfg.params.learning_rate,
+            "eval_metricr": cfg.params.eval_metric,
+        }
+        mlflow.log_params(params)
+
+        y_pred_proba = model.predict_proba(X_val)
+        y_pred = model.predict(X_val)
+
+        accuracy = accuracy_score(y_val, y_pred)
+        logloss = log_loss(y_val, y_pred_proba)
+        roc_auc = roc_auc_score(y_val, y_pred_proba, multi_class="ovr")
+
+        mlflow.log_metric("accuracy", accuracy)
+        mlflow.log_metric("log_loss", logloss)
+        mlflow.log_metric("roc_auc", roc_auc)
+
     return model.save_model("model.bin")
 
 
