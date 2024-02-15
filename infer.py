@@ -10,7 +10,7 @@ def main(cfg: DictConfig) -> None:
     OmegaConf.to_yaml(cfg)
 
     model = CatBoostClassifier()
-    model.load_model("model3.bin")
+    model.load_model("model.bin")
 
     test = pd.read_csv("./data/test_df.csv", index_col=0)
 
